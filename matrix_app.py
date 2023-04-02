@@ -2,9 +2,10 @@
 
 from tkinter import *
 from tkinter import messagebox
+from matrix import Matrix
 
 
-def window2():
+def window2_test():
 
 	# M1
 	row_m1 = clicked_m1.get()
@@ -60,24 +61,97 @@ def window2():
 	for i in range(row_m1):
 		one_column(i + 1, 1)
 
-
-
-
-	
-
-	
-
-
 	root2.mainloop()
 
 
 
 
 
+def window2():
+
+	# M1
+	row_m1 = clicked_m1.get()
+	column_m1 = clicked2_m1.get()
+	# M2
+	row_m2 = clicked_m2.get()
+	column_m2 = clicked2_m2.get()
+
+	rows = [row_m1, row_m2]
+	columns = [column_m1, column_m2]
+	#print(int(max(rows)))
+
+	if column_m1 != row_m2:
+		messagebox.showerror('Python Error', 'The number of columns of M1 has to be equal to the number of rows of M2.')
+
+	else:
+		root2 = Tk()
+		root2.title('Input Matrix')
+		root2.geometry("1000x200")
+
+		
+
+		# Creating the objects for both Matrices
+		m1 = Matrix(row_m1, column_m1)
+		m2 = Matrix(row_m2, column_m2)
+
+		# Definig the dimensions
+		m1_input = m1.create_arrays(root2)
+		m2_input = m2.create_arrays(root2)
+		
+		# Setting the columns and rows on tkinter
+		for i in range(len(m1_input)):
+			for j in range(len(m1_input[i])):
+				m1_input[i][j].grid(row=j, column=i)
+
+		# Styling equation
+		row_sign = row_m1 // 2
+		sign = Label(root2, text = "*")
+		sign.grid(row=row_sign, column=column_m1)
+		sign = Label(root2, text="=")
+		sign.grid(row=row_sign, column=column_m1 + column_m2 + 1)
+
+		# Start from 0 + number of columns of M1
+		for i in range(len(m2_input)):
+			for j in range(len(m2_input[i])):
+				m2_input[i][j].grid(row=j, column=i + column_m1 + 1)
+
+		def multiply():
+			# Get the data in array
+			m1_value = m1.get_from_m(m1_input)
+			m2_value = m2.get_from_m(m2_input)
+			print(m1_value,'\n', m2_value)
+
+			# Traspose the M1
+			mt = m1.transpose_matrix(m1_value)
+			print(mt)
+			newm = m1.matrix_creator(mt, m2_value)
+
+			print(newm)
+
+			result = m1.get_result(newm)
+			lines = []
+			for row in result:
+				lines.append('(' + (''.join(row)).lstrip() + ')')
 
 
 
+			# Matrix output in a
+			Output = Label(root2, text='\n'.join(lines), height = max(rows)*2, width = 25, bg = "light cyan", fg='black')
+			#Output.insert(END, '\n'.join(result))
+			Output.grid(row=0, column=column_m1 + column_m2 + 2, rowspan=max(rows))
 
+			
+			
+
+
+
+		
+		multiply = Button(root2, text="Multiply", command=multiply)
+		multiply.grid(row=max(rows), column=0, columnspan=column_m1 + column_m2 + 1)
+
+
+		root2.mainloop()
+	
 
 
 
@@ -117,11 +191,11 @@ def window1():
 
 	# Set the initial values for the dropdown menus
 	# M1
-	clicked_m1.set(options[0])
-	clicked2_m1.set(options[0])
+	clicked_m1.set(options[1])
+	clicked2_m1.set(options[1])
 	# M2
-	clicked_m2.set(options[0])
-	clicked2_m2.set(options[0])
+	clicked_m2.set(options[1])
+	clicked2_m2.set(options[1])
 
 
 	# Create the drop dow menu for both matrix
@@ -150,9 +224,9 @@ def window1():
 
 	# Buttons
 	dimensionButton = Button(root, text="Show Dimension", command=show_dimension)
-	dimensionButton.grid(row=0, column=4)
+	dimensionButton.grid(row=1, column=4)
 	matrixButton = Button(root, text="Create Matrix", command=window2)
-	matrixButton.grid(row=1, column=4)
+	matrixButton.grid(row=4, column=0, columnspan=2)
 
 	root.mainloop()
 

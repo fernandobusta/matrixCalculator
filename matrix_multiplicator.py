@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+# Logic of the process
+
 # Matrix for testing -> m1 * m2
-m1 = [[2, 3, 7], [2, 5, 8]]
-m2 = [[1, 4], [2, 4], [3, 2]]
+m1 = [[1, 4, 7], [2, 5, 8]]
+m2 = [[1, 0], [2, 5], [3, 2]]
 
 # Denote variables
 m1_columns = len(m1) #2
